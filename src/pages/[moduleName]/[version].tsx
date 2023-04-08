@@ -7,7 +7,6 @@ import { env } from '~/env.mjs';
 import { prisma } from '~/server/db';
 import type {
   ModuleWithVersionAndCurVersion,
-  ModuleWithCurVersion,
   NpmAuditLevel,
   SemgrepLevel,
 } from '~/types';

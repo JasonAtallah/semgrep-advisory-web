@@ -12,6 +12,8 @@ export const BreadCrumbs = () => {
   const { moduleName, version } = router.query;
   const { hasVulnerabilites } = useContext(AppContext);
 
+  if (!moduleName) return null;
+
   return (
     <div className="breadcrumbs text-sm">
       <ul>
