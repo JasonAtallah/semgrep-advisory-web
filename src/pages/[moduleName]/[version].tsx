@@ -11,6 +11,7 @@ import type {
   SemgrepLevel,
 } from '~/types';
 import { AppContext } from '../_app';
+import Head from 'next/head';
 
 const hasAnyVulnerabilities = (versionInfo: Version) => {
   // easier to destructure metadata than all the vulnerability fields
@@ -192,6 +193,8 @@ interface Props {
 
 export default function ModuleVersion({ module_ }: Props) {
   const context = useContext(AppContext);
+  const name = useMemo(() => module_.name, [module_]);
+  const version = useMemo(() => module_.curVersion.version, [module_]);
 
   useEffect(() => {
     const curVersion = module_?.curVersion;
@@ -201,9 +204,26 @@ export default function ModuleVersion({ module_ }: Props) {
   }, [context, module_]);
 
   return (
-    <div className="flex flex-col gap-12">
-      <ModuleHeader module_={module_} />
-      <ResultsCards module_={module_} />
-    </div>
+    <>
+      <Head>
+        <title>{`${name}@${version}`}</title>
+        <meta property="og:title" key="title" content={`${name}@${version}`} />
+        <meta
+          name="description"
+          content={`Vulnerabilities for ${name} NPM module version ${version}}`}
+        />
+        <meta
+          name="keywords"
+          content={`npm, node, npm-audit, semgrep, ${name} ${name}@${version}`}
+        />
+        <meta httpEquiv="Content-Type" content="text/html;charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <div className="flex flex-col gap-12">
+        <ModuleHeader module_={module_} />
+        <ResultsCards module_={module_} />
+      </div>
+    </>
   );
 }
