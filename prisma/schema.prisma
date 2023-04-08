@@ -24,7 +24,7 @@ model Version {
     moduleId         String
     npmAuditCritical Int
     npmAuditHigh     Int
-    npmAuditMedium   Int
+    npmAuditModerate Int
     npmAuditLow      Int
     semgrepHigh      Int
     semgrepMedium    Int

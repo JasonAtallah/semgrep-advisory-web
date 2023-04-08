@@ -10,7 +10,7 @@ import Link from 'next/link';
 export const BreadCrumbs = () => {
   const router = useRouter();
   const { moduleName, version } = router.query;
-  const { hasVulnerabilites } = useContext(AppContext);
+  const context = useContext(AppContext);
 
   if (!moduleName) return null;
 
@@ -26,18 +26,18 @@ export const BreadCrumbs = () => {
           <li>
             <Link href={`/${String(moduleName)}`}>
               <CubeIcon />
-              {moduleName}
+              <span className="ml-1">{moduleName}</span>
             </Link>
           </li>
         )}
         {version && (
           <li>
-            {hasVulnerabilites ? (
+            {context?.hasVulns ? (
               <ShieldExclamationIcon />
             ) : (
               <ShieldCheckIcon />
             )}
-            <span>{version}</span>
+            <span className="ml-1">{version}</span>
           </li>
         )}
       </ul>

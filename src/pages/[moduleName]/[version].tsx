@@ -1,7 +1,7 @@
 import type { Version } from '@prisma/client';
 import { type GetStaticPropsContext } from 'next';
 import Link from 'next/link';
-import { useEffect, useMemo } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
 import { DownIcon } from '~/components/icons/down';
 import { env } from '~/env.mjs';
 import { prisma } from '~/server/db';
@@ -10,6 +10,7 @@ import type {
   NpmAuditLevel,
   SemgrepLevel,
 } from '~/types';
+import { AppContext } from '../_app';
 
 const hasAnyVulnerabilities = (versionInfo: Version) => {
   // easier to destructure metadata than all the vulnerability fields
@@ -67,9 +68,7 @@ const ModuleHeader = ({
 
   return (
     <div className="flex items-end">
-      <Link href={`/${module_.name}`}>
-        <h1 className="text-6xl">{module_.name}</h1>
-      </Link>
+      <h1 className="text-6xl">{module_.name}</h1>
       <div className="dropdown">
         <label tabIndex={0} className="btn-ghost btn flex gap-1 text-primary">
           <h3 className="text-3xl">@{module_?.curVersion?.version}</h3>
@@ -180,7 +179,7 @@ const ResultsCards = ({
         <ResultsCard results={npmAuditResults} />
       </div>
       <div>
-        <h3 className="ml-2 text-xl text-semgrep-green">Semgrep</h3>
+        <h3 className="ml-2 text-xl font-bold text-semgrep-green">Semgrep</h3>
         <ResultsCard results={semgrepResults} />
       </div>
     </div>
@@ -192,12 +191,14 @@ interface Props {
 }
 
 export default function ModuleVersion({ module_ }: Props) {
+  const context = useContext(AppContext);
+
   useEffect(() => {
     const curVersion = module_?.curVersion;
     if (!curVersion) return;
     const hasVulnerabilites = hasAnyVulnerabilities(curVersion);
-    // TODO: Update the context with the vulnerability status
-  }, [module_]);
+    context?.setHasVulns(hasVulnerabilites);
+  }, [context, module_]);
 
   return (
     <div className="flex flex-col gap-12">

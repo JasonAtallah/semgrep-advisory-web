@@ -18,7 +18,7 @@ async function createModuleAndVersions(name: string, versions: string[]) {
     moduleId: module_.id,
     npmAuditCritical: getRandomInt(),
     npmAuditHigh: getRandomInt(),
-    npmAuditMedium: getRandomInt(),
+    npmAuditModerate: getRandomInt(),
     npmAuditLow: getRandomInt(),
     semgrepHigh: getRandomInt(),
     semgrepMedium: getRandomInt(),
