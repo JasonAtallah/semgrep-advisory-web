@@ -148,10 +148,11 @@ const ResultsCards = ({
   const generateResults = (
     keys: NpmAuditLevel[] | SemgrepLevel[],
     curVersion: Version,
-    prevVersion: Version | undefined
+    prevVersion: Version | undefined,
+    auditKeyPrefix: 'npmAudit' | 'semgrep'
   ): Results =>
     keys.map(key => {
-      const auditKey = `npmAudit${key}` as keyof Version;
+      const auditKey = `${auditKeyPrefix}${key}` as keyof Version;
 
       const cur = (curVersion[auditKey] as number) || 0;
       const prev = (prevVersion?.[auditKey] as number) || 0;
@@ -161,13 +162,13 @@ const ResultsCards = ({
 
   const npmAuditResults = useMemo(() => {
     const keys: NpmAuditLevel[] = ['Low', 'Moderate', 'High', 'Critical'];
-    const results = generateResults(keys, curVersion, prevVersion);
+    const results = generateResults(keys, curVersion, prevVersion, 'npmAudit');
     return results;
   }, [curVersion, prevVersion]);
 
   const semgrepResults = useMemo(() => {
     const keys: SemgrepLevel[] = ['Low', 'Medium', 'High'];
-    const results = generateResults(keys, curVersion, prevVersion);
+    const results = generateResults(keys, curVersion, prevVersion, 'semgrep');
     return results;
   }, [curVersion, prevVersion]);
 
