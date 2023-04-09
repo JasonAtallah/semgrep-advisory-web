@@ -84,7 +84,7 @@ export const SearchBar = () => {
     getOptions(value)
       .then(options => setOptions(options))
       .catch(error => console.error(error));
-  }, 1000);
+  }, 10);
 
   const changeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.trim();
