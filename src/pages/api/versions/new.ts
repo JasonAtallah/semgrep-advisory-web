@@ -4,7 +4,7 @@ import { prisma } from '~/server/db';
 
 const bodySchema = z.object({
   version: z.string(),
-  moduleId: z.string().cuid2(),
+  moduleName: z.string(),
   npmAuditCritical: z.number().int().nonnegative(),
   npmAuditHigh: z.number().int().nonnegative(),
   npmAuditModerate: z.number().int().nonnegative(),
@@ -24,8 +24,23 @@ export default async function handler(
   }
 
   try {
-    const data = bodySchema.parse(req.body);
-    const newVersion = await prisma.version.create({ data });
+    const { moduleName, ...data } = bodySchema.parse(req.body);
+
+    const existingModule = await prisma.module.findUnique({
+      where: { name: moduleName },
+    });
+
+    let module_;
+    if (existingModule) {
+      module_ = existingModule;
+    } else {
+      module_ = await prisma.module.create({ data: { name: moduleName } });
+    }
+
+    const newVersion = await prisma.version.create({
+      data: { ...data, moduleId: module_.id },
+    });
+
     res.status(200).json(newVersion);
   } catch (error) {
     if (error instanceof z.ZodError) {
