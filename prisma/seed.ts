@@ -40,6 +40,20 @@ async function main() {
     ]),
     createModuleAndVersions('lodash', ['4.17.21', '4.17.20', '4.17.19']),
     createModuleAndVersions('next', ['13.3.1-canary.3', '13.3.0', '12.3.4']),
+    createModuleAndVersions('next-auth', ['4.21.1', '3.29.10', '4.21.0']),
+    createModuleAndVersions('nexus', [
+      '1.4.0-next.13',
+      '1.3.0',
+      '1.2.1',
+      '1.2.0',
+    ]),
+    createModuleAndVersions('needle', [
+      '3.2.0',
+      '3.1.0',
+      '2.9.1',
+      '3.0.0',
+      '2.4.1',
+    ]),
   ]);
 }
 
